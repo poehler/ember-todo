@@ -1,6 +1,6 @@
 module("helperTests");
 
-var numberOfDays = 1 * 3;
+var numberOfDays = 1 * 365;
 var day = 1000*60*60*24;
 var dateSamples = [];
 
@@ -37,7 +37,37 @@ function runForEachDate(testFunction) {
 		ok(result.passed, result.message);
     }
 }
-                    
+
+test('validateTaskName : Valid Name', function() {
+    var result = ToDo.validateTaskName('Task Name');
+    equal(result, true, "validateTaskName was " + result + " expected true");
+});
+
+test('validateTaskName : Invalid Name', function() {
+    var result = ToDo.validateTaskName('');
+    equal(result, false, "validateTaskName was " + result + " expected false");
+});
+
+test('validateTaskName : Undefined Name', function() {
+    var result = ToDo.validateTaskName();
+    equal(result, false, "validateTaskName was " + result + " expected false");
+});
+
+test('validateStatus : Valid Status', function() {
+    var result = ToDo.validateStatus('A');
+    equal(result, true, "validateStatus was " + result + " expected true");
+});
+
+test('validateStatus : Invalid Status', function() {
+    var result = ToDo.validateStatus('');
+    equal(result, false, "validateStatus was " + result + " expected false");
+});
+
+test('validateStatus : Undefined Status', function() {
+    var result = ToDo.validateStatus();
+    equal(result, false, "validateStatus was " + result + " expected false");
+});
+
 test('isBlank : Valid Not Blank', function() {
     var result = ToDo.isBlank('Not Blank');
     equal(result, false, "isBlank was " + result + " expected false");
@@ -168,35 +198,3 @@ test("Is A Formatted (YYYYMMDD) Date Field with no separator", function() {
         return result;
     });
 });
-
-test('validateTaskName : Valid Name', function() {
-    var result = ToDo.validateTaskName('Task Name');
-    equal(result, true, "validateTaskName was " + result + " expected true");
-});
-
-test('validateTaskName : Invalid Name', function() {
-    var result = ToDo.validateTaskName('');
-    equal(result, false, "validateTaskName was " + result + " expected false");
-});
-
-test('validateTaskName : Undefined Name', function() {
-    var result = ToDo.validateTaskName();
-    equal(result, false, "validateTaskName was " + result + " expected false");
-});
-
-test('validateStatus : Valid Status', function() {
-    var result = ToDo.validateStatus('A');
-    equal(result, true, "validateStatus was " + result + " expected true");
-});
-
-test('validateStatus : Invalid Status', function() {
-    var result = ToDo.validateStatus('');
-    equal(result, false, "validateStatus was " + result + " expected false");
-});
-
-test('validateStatus : Undefined Status', function() {
-    var result = ToDo.validateStatus();
-    equal(result, false, "validateStatus was " + result + " expected false");
-});
-
-

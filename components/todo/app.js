@@ -1,7 +1,7 @@
 // Create the application
 "use strict";
 
-window.ToDo = Ember.Application.create();
+window.ToDo = Ember.Application.create({rootElement: '#todo-1'});
 
 ToDo.ApplicationAdapter = DS.FixtureAdapter.extend();
 

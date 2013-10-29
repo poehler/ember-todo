@@ -26,7 +26,8 @@ module.exports = function(config) {
           "components/todo/app.js",
           "components/todo/layout.js",
           "components/todo/templates.html",
-          "js/tests/unit_test_helpers.js"
+          "js/tests/unit_test_task_controller.js"//,
+//          "js/tests/unit_test_helpers.js"
         ],
     exclude: [ ],
     reporters: ['progress'],
@@ -37,3 +38,4 @@ module.exports = function(config) {
     singleRun: true
   });
 };
+
