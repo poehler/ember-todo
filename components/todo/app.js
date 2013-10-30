@@ -267,6 +267,9 @@ Ember.Handlebars.helper('edit-task', ToDo.EditTaskView);
 ToDo.TasksController = Ember.ArrayController.extend({
 	sortProperties: ['sortedTargetCompletionDate'],
 	sortAscending: true,
+	newTaskName: "",
+	newStatus: "A",
+	newTargetCompletionDate: "",
 
 	isSortedByTaskName: function() {
 		if (this.sortProperties[0] == 'taskName')
@@ -320,30 +323,30 @@ ToDo.TasksController = Ember.ArrayController.extend({
 
 	lateCount: function () {
 		return this.filterBy('isLate', true).get('length');
-	}.property('@each.isActive'),
+	}.property('@each.isLate'),
 
 	lateInflection: function () {
 		var remaining = this.get('lateCount');
 		return remaining === 1 ? 'task is' : 'tasks are';
-	}.property('activeCount'),
+	}.property('lateCount'),
 
 	onHoldCount: function () {
 		return this.filterBy('isOnHold', true).get('length');
-	}.property('@each.isActive'),
+	}.property('@each.isOnHold'),
 
 	onHoldInflection: function () {
 		var remaining = this.get('onHoldCount');
 		return remaining === 1 ? 'task is' : 'tasks are';
-	}.property('activeCount'),
+	}.property('onHoldCount'),
 
 	completeCount: function () {
 		return this.filterBy('isComplete', true).get('length');
-	}.property('@each.isActive'),
+	}.property('@each.isComplete'),
 
 	completeInflection: function () {
 		var remaining = this.get('completeCount');
 		return remaining === 1 ? 'task has' : 'tasks have';
-	}.property('activeCount'),
+	}.property('completeCount'),
 	
 	actions: {
 		

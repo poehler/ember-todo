@@ -1,6 +1,3 @@
-<script type="text/x-handlebars">{{outlet}}</script>
-
-<script type="text/x-handlebars" data-template-name="tasks">
 	<div id="todo-container" align="center">
 		<header id="header" align="center" style="padding:20px 0;">
 			<h2>To Do List</h2>
@@ -77,30 +74,3 @@
 			{{#link-to "about"}}<button>About this App</button>{{/link-to}}
 		</footer>
 	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="about">
-	<div align="center" style="padding:20px;background-color:#f0f0f0;min-width:650px; width:850px; -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
-		<header id="header">
-			<h3>About This App</h3>
-		</header>
-		<div align="center">
-			This is an app created for component testing.<br>
-			
-			The following things still need to be worked on:
-			<div align="left" style="width:50%;">
-			<ul>
-				<li>Unit Testing</li>
-				<li style="text-decoration:line-through;">Field Validation (especially dates!)</li>
-				<li style="text-decoration:line-through;">Add summary data to the footer</li>
-				<li style="text-decoration:line-through;">Sorting</li>
-				<li>Cross Browser Date Picker (Kalendae?)</li>
-			</ul>
-			</div>
-			
-		</div>
-		<div>
-			{{#link-to "tasks"}}<button>Tasks</button>{{/link-to}}
-		</div>
-	</div>
-</script>

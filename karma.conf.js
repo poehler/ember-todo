@@ -11,7 +11,7 @@ module.exports = function(config) {
 		'karma-phantomjs-launcher'
 	],
 	preprocessors: {
-		"components/todo/templates.html": 'ember'
+		"components/todo/*.handlebars": 'ember'
 	},
     basePath: '',
     files: [
@@ -25,8 +25,9 @@ module.exports = function(config) {
           "components/todo/loader.js",
           "components/todo/app.js",
           "components/todo/layout.js",
-          "components/todo/templates.html",
-          "js/tests/unit_test_task_controller.js"//,
+          "components/todo/*.handlebars",
+          "js/tests/test_helper.js",
+          "js/tests/unit_test_tasks_controller.js"//,
 //          "js/tests/unit_test_helpers.js"
         ],
     exclude: [ ],
