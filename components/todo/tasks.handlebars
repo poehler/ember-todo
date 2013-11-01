@@ -1,76 +1,80 @@
-	<div id="todo-container" align="center">
-		<header id="header" align="center" style="padding:20px 0;">
+	<div id="todo-container" align="center" class="row-fluid">
+		<header id="header" align="center">
 			<h2>To Do List</h2>
 		</header>
-		<ul id="todo-list">
-			<li class="headerRow">
-				<div {{action sortByTaskName}} {{bind-attr class=":column-1 isSortedByTaskName:todo-sorted"}}>Name</div>
-				<div {{action sortByTaskStatus}} {{bind-attr class=":column-2 isSortedByTaskStatus:todo-sorted"}}>Status</div>
-				<div {{action sortByTargetCompletionDate}} {{bind-attr class=":column-3 isSortedByTargetCompletionDate:todo-sorted"}}>Target Date</div>
-				<div {{action sortByActualCompletionDate}} {{bind-attr class=":column-4 isSortedByActualCompletionDate:todo-sorted"}}>Actual Date</div>
-				<div class="column-5">Action</div>
-			</li>
-	
+		<div class="row-fluid">
+			<div class="span10 offset1">
+				<ul id="todo-list">
+					<li class="headerRow">
+						<div {{action sortByTaskName}} {{bind-attr class=":column-1 isSortedByTaskName:todo-sorted"}}>Name</div>
+						<div {{action sortByTaskStatus}} {{bind-attr class=":column-2 isSortedByTaskStatus:todo-sorted"}}>Status</div>
+						<div {{action sortByTargetCompletionDate}} {{bind-attr class=":column-3 isSortedByTargetCompletionDate:todo-sorted"}}>Target Date</div>
+						<div {{action sortByActualCompletionDate}} {{bind-attr class=":column-4 isSortedByActualCompletionDate:todo-sorted"}}>Actual Date</div>
+						<div class="column-5">Action</div>
+					</li>
 			
-			<li class="newRow">
-				<div class="column-1">{{view Ember.TextField id="new-todo" placeholder="What needs to be done?" valueBinding="newTaskName" class="task-name-input-field"}}</div>
-				<div class="column-2">{{view Ember.Select contentBinding="ToDo.taskStatusCodes" optionValuePath="content.id" valueBinding="newStatus" optionLabelPath="content.decode"}}</div>
-				<div class="column-3">{{view Ember.TextField id="new-target-date" placeholder="mm/dd/yyyy" valueBinding="newTargetCompletionDate" class="task-date-field"}}</div>
-				<div class="column-4">&nbsp;</div>
-				<div class="column-5"><button id="new-add" {{action "createTask"}} {{bind-attr class=":todo-button isValidRecord:todo-enabled:todo-disabled" enabled="isValidRecord"}}">{{#if isValidRecord}}Add{{else}}Enter Task Info{{/if}}</button></div>
-			</li>
-			
-	
-			
-			{{#each task in controller.arrangedContent itemController="task"}}
-				{{#if isEditing}}
 					
-					<li class="updateRow">
-						<div class="column-1">{{edit-task value=taskName class="task-name-input-field"}}</div>
-						<div class="column-2">{{view Ember.Select contentBinding="ToDo.taskStatusCodes" optionValuePath="content.id" valueBinding="taskStatusCode" optionLabelPath="content.decode"}}</div>
-						<div class="column-3">{{view Ember.TextField valueBinding="formattedTargetCompletionDate" class="task-date-field"}}</div>
-						<div class="column-4">{{view Ember.TextField valueBinding="formattedActualCompletionDate" class="task-date-field"}}</div>
-						<div class="column-5">
-							<button {{action "acceptChanges"}} {{bind-attr class=":todo-button isValidRecord:todo-enabled:todo-disabled" enabled="isValidRecord"}}">{{#if isValidRecord}}Save{{else}}Check{{/if}}</button>
-							<button class="todo-button" {{action "discardChanges"}}>Reset</button>
-						</div>
+					<li class="newRow">
+						<div class="column-1">{{view Ember.TextField id="new-todo" placeholder="What needs to be done?" valueBinding="newTaskName" class="task-name-input-field"}}</div>
+						<div class="column-2">{{view Ember.Select contentBinding="ToDo.taskStatusCodes" optionValuePath="content.id" valueBinding="newStatus" optionLabelPath="content.decode"}}</div>
+						<div class="column-3">{{view Ember.TextField id="new-target-date" placeholder="mm/dd/yyyy" valueBinding="newTargetCompletionDate" class="task-date-field"}}</div>
+						<div class="column-4">&nbsp;</div>
+						<div class="column-5"><button id="new-add" {{action "createTask"}} {{bind-attr class=":btn isValidRecord:btn-success:btn-warning" enabled="isValidRecord"}}">{{#if isValidRecord}}Add{{else}}Enter Task Info{{/if}}</button></div>
 					</li>
 					
-				{{else}}
-					
-					<li {{bind-attr class=":displayRow task.isLate:late task.isComplete:complete task.isActive:active task.isInactive:inactive"}}>
-						<div {{action "editTask" on="doubleClick"}} class="column-1">{{task.taskName}}</div>
-						<div class="column-2">{{task.taskStatus}}</div>
-						<div class="column-3">{{task.formattedTargetCompletionDate}}</div>
-						<div class="column-4">{{task.formattedActualCompletionDate}}&nbsp;</div>
-						<div class="column-5">
-	
-							{{#if userConfirmed}}
-								<span style="color:red;">Really?</span>
-								<button class="todo-button" {{action "doNotRemoveTask"}}>NO</button>
-								<button class="todo-button" {{action "removeTask"}}>Yes</button>
-							{{else}}
-								<button class="todo-button" {{action "editTask"}}>Edit</button>
-								<button class="todo-button" {{action "confirmRemoval"}}>Delete</button>
-							{{/if}}
-	
-						</div>
-					</li>
-					
-				{{/if}}
-			{{/each}}
 			
-	
-		</ul>
-		<div style="clear:both;font-size:10px;width:750px;margin:10px 0;" align="left">
-			<span id="todo-active-count"> <strong>{{activeCount}}</strong> Active {{activeInflection}} left </span><br>
-			<span id="todo-active-count"> <strong>{{lateCount}}</strong> {{lateInflection}} late </span><br>
-			<span id="todo-active-count"> <strong>{{onHoldCount}}</strong> {{onHoldInflection}} currently on hold</span><br>
-			<span id="todo-active-count"> <strong>{{completeCount}}</strong> {{completeInflection}} been completed</span><br>
+					
+					{{#each task in controller.arrangedContent itemController="task"}}
+						{{#if isEditing}}
+							
+							<li class="updateRow">
+								<div class="column-1">{{edit-task value=taskName class="task-name-input-field"}}</div>
+								<div class="column-2">{{view Ember.Select contentBinding="ToDo.taskStatusCodes" optionValuePath="content.id" valueBinding="taskStatusCode" optionLabelPath="content.decode"}}</div>
+								<div class="column-3">{{view Ember.TextField valueBinding="formattedTargetCompletionDate" class="task-date-field"}}</div>
+								<div class="column-4">{{view Ember.TextField valueBinding="formattedActualCompletionDate" class="task-date-field"}}</div>
+								<div class="column-5">
+									<button {{action "acceptChanges"}} {{bind-attr class=":btn-success :todo-button isValidRecord:todo-enabled:todo-disabled" enabled="isValidRecord"}}">{{#if isValidRecord}}Save{{else}}Check{{/if}}</button>
+									<button class="todo-button btn-danger" {{action "discardChanges"}}>Reset</button>
+								</div>
+							</li>
+							
+						{{else}}
+							
+							<li {{bind-attr class=":display-row task.isLate:late task.isComplete:complete task.isActive:active task.isInactive:inactive"}}>
+								<div {{action "editTask" on="doubleClick"}} class="column-1">{{task.taskName}}</div>
+								<div class="column-2">{{task.taskStatus}}</div>
+								<div class="column-3">{{task.formattedTargetCompletionDate}}</div>
+								<div class="column-4">{{task.formattedActualCompletionDate}}&nbsp;</div>
+								<div class="column-5">
+			
+									{{#if userConfirmed}}
+										<button class=" btn todo-button" {{action "doNotRemoveTask"}}>NO</button>
+										<button class="btn-danger todo-button" {{action "removeTask"}}>Yes</button>
+									{{else}}
+										<button class="btn todo-button" {{action "editTask"}}>Edit</button>
+										<button class="btn-danger todo-button" {{action "confirmRemoval"}}>Delete</button>
+									{{/if}}
+			
+								</div>
+							</li>
+							
+						{{/if}}
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span8 offset2">
+				<div align="left">
+					<span id="todo-active-count"> <strong>{{activeCount}}</strong> Active {{activeInflection}} left </span><br>
+					<span id="todo-active-count"> <strong>{{lateCount}}</strong> {{lateInflection}} late </span><br>
+					<span id="todo-active-count"> <strong>{{onHoldCount}}</strong> {{onHoldInflection}} currently on hold</span><br>
+					<span id="todo-active-count"> <strong>{{completeCount}}</strong> {{completeInflection}} been completed</span><br>
+				</div>
+			</div>
 		</div>
 	
-		
 		<footer style="clear:both;padding:20px 0;" align="center">
-			{{#link-to "about"}}<button>About this App</button>{{/link-to}}
+			{{#link-to "about"}}<button class="btn">About this App</button>{{/link-to}}
 		</footer>
 	</div>
