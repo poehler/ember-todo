@@ -19,8 +19,9 @@
 	var emberLoadPollingDelay = 100;
 	var timer = window.setInterval(function() {
 		if (typeof window["ToDo"] === "object") {
+			$("#todo-1 + .loading").addClass("done");
+			$("#todo-1 + .loading").remove();
 			window.clearInterval(timer);
-			$("#todo-1 + .spinner").remove();
 		}
 	}, emberLoadPollingDelay);
 })()
