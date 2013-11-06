@@ -1,7 +1,5 @@
 jQuery(document).ready(function($) {
 		
-	$("#todo-1").after("<div class=\"loading\" style=\"height:200px;width:200px;\"></div>")
-
 	var detectedComponents = {};
 
 	var detectComponents = function(element) {

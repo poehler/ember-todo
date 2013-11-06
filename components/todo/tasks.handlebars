@@ -15,9 +15,9 @@
 			
 					
 					<li class="newRow">
-						<div class="column-1">{{view Ember.TextField id="new-todo" placeholder="What needs to be done?" valueBinding="newTaskName" class="task-name-input-field"}}</div>
-						<div class="column-2">{{view Ember.Select contentBinding="ToDo.taskStatusCodes" optionValuePath="content.id" valueBinding="newStatus" optionLabelPath="content.decode"}}</div>
-						<div class="column-3">{{view Ember.TextField id="new-target-date" placeholder="mm/dd/yyyy" valueBinding="newTargetCompletionDate" class="task-date-field"}}</div>
+						<div class="column-1">{{view Ember.TextField id="new-todo-#todoComponentName#" placeholder="What needs to be done?" valueBinding="newTaskName" class="task-name-input-field"}}</div>
+						<div class="column-2">{{view Ember.Select contentBinding="#todoComponentName#.taskStatusCodes" optionValuePath="content.id" valueBinding="newStatus" optionLabelPath="content.decode"}}</div>
+						<div class="column-3">{{view Ember.TextField id="new-target-date-#todoComponentName#" placeholder="mm/dd/yyyy" valueBinding="newTargetCompletionDate" class="task-date-field"}}</div>
 						<div class="column-4">&nbsp;</div>
 						<div class="column-5"><button id="new-add" {{action "createTask"}} {{bind-attr class=":btn isValidRecord:btn-success:btn-warning" enabled="isValidRecord"}}">{{#if isValidRecord}}Add{{else}}Enter Task Info{{/if}}</button></div>
 					</li>
@@ -29,7 +29,7 @@
 							
 							<li class="updateRow">
 								<div class="column-1">{{edit-task value=taskName class="task-name-input-field"}}</div>
-								<div class="column-2">{{view Ember.Select contentBinding="ToDo.taskStatusCodes" optionValuePath="content.id" valueBinding="taskStatusCode" optionLabelPath="content.decode"}}</div>
+								<div class="column-2">{{view Ember.Select contentBinding="#todoComponentName#.taskStatusCodes" optionValuePath="content.id" valueBinding="taskStatusCode" optionLabelPath="content.decode"}}</div>
 								<div class="column-3">{{view Ember.TextField valueBinding="formattedTargetCompletionDate" class="task-date-field"}}</div>
 								<div class="column-4">{{view Ember.TextField valueBinding="formattedActualCompletionDate" class="task-date-field"}}</div>
 								<div class="column-5">

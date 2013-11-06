@@ -1,12 +1,22 @@
 // Create the application
 "use strict";
+$('[class*="todo-component"]').each(function(i, element) {
+    var todoDiv = "#" + this.id;
+    var todoComponentName = this.getAttribute("data-component-name");
+    
+window[todoComponentName] = Ember.Application.create(
+		{	rootElement: todoDiv,
+            Resolver: Ember.DefaultResolver.extend({
+    		    resolveTemplate: function(parsedName) {
+                    parsedName.fullNameWithoutType = todoComponentName + "/" + parsedName.fullNameWithoutType;
+                    return this._super(parsedName);
+		    }})
+});
 
-window.ToDo = Ember.Application.create({rootElement: '#todo-1'});
-
-ToDo.ApplicationAdapter = DS.FixtureAdapter.extend();
+window[todoComponentName].ApplicationAdapter = DS.FixtureAdapter.extend();
 
 // Define validators and helpers
-ToDo.validateTaskName = function (checkThisName) {
+window[todoComponentName].validateTaskName = function (checkThisName) {
 	var isValid = true;
 
 	if (checkThisName == undefined) 
@@ -17,7 +27,7 @@ ToDo.validateTaskName = function (checkThisName) {
 	return isValid;
 };
 
-ToDo.validateStatus = function (checkThisStatus) {
+window[todoComponentName].validateStatus = function (checkThisStatus) {
 	var isValid = true;
 
 	if (checkThisStatus == undefined)
@@ -28,7 +38,7 @@ ToDo.validateStatus = function (checkThisStatus) {
 	return isValid;
 };
 
-ToDo.validateDate = function (checkThisDate) {
+window[todoComponentName].validateDate = function (checkThisDate) {
 	var isValid = true;
 	var dateRegularExpression = /^\d{1,2}[./-]\d{1,2}[./-]\d{4}$/;
 
@@ -36,16 +46,16 @@ ToDo.validateDate = function (checkThisDate) {
 		isValid = false;
 	else if (!checkThisDate.match(dateRegularExpression))
 		isValid = false;
-	else if (!ToDo.isValidDate(checkThisDate))
+	else if (!window[todoComponentName].isValidDate(checkThisDate))
 		isValid = false;
 
 	return isValid;
 };
 
-ToDo.isValidDate = function(date) {
+window[todoComponentName].isValidDate = function(date) {
 	var isValid = true;
 
-	if (ToDo.isBlank(date))
+	if (window[todoComponentName].isBlank(date))
 		isValid = false;
 	else if (isNaN((new Date(date)).getYear()))
 		isValid = false;
@@ -53,51 +63,51 @@ ToDo.isValidDate = function(date) {
 	return isValid;
 }
 
-ToDo.isBlank = function(x) {
+window[todoComponentName].isBlank = function(x) {
 	return (x === undefined) || (x === "") || (x === null);
 }
 
-ToDo.getFormattedDateOrEmptyString = function(date, format, separator) {
+window[todoComponentName].getFormattedDateOrEmptyString = function(date, format, separator) {
 	if(format === undefined)
 		format = 'MMDDYYYY';
 
 	if(separator === undefined)
 		separator = '/';
 
-	if (!ToDo.isValidDate(date))
+	if (!window[todoComponentName].isValidDate(date))
 		return "";
 	else if (format == "YYYYMMDD") 
-		return ToDo.formatDateYYYYMMDD(new Date(date), separator);
+		return window[todoComponentName].formatDateYYYYMMDD(new Date(date), separator);
 	else if (format == "MMDDYYYY") 
-		return ToDo.formatDateMMDDYYYY(new Date(date), separator);
+		return window[todoComponentName].formatDateMMDDYYYY(new Date(date), separator);
 
 
 	return YYYY + separator + MM + separator + DD;
 }
 
-ToDo.formatDateYYYYMMDD = function(date, separator) {
+window[todoComponentName].formatDateYYYYMMDD = function(date, separator) {
 	if(separator === undefined)
 		separator = '/';
 
-	var MM = ToDo.zeroPad(date.getMonth() + 1, 2);
-	var DD = ToDo.zeroPad(date.getDate(), 2);
+	var MM = window[todoComponentName].zeroPad(date.getMonth() + 1, 2);
+	var DD = window[todoComponentName].zeroPad(date.getDate(), 2);
 	var YYYY = date.getFullYear()
 
 	return YYYY + separator + MM + separator + DD;
 }
 
-ToDo.formatDateMMDDYYYY = function(date, separator) {
+window[todoComponentName].formatDateMMDDYYYY = function(date, separator) {
 	if(separator === undefined)
 		separator = '/';
 
-	var MM = ToDo.zeroPad(date.getMonth() + 1, 2);
-	var DD = ToDo.zeroPad(date.getDate(), 2);
+	var MM = window[todoComponentName].zeroPad(date.getMonth() + 1, 2);
+	var DD = window[todoComponentName].zeroPad(date.getDate(), 2);
 	var YYYY = date.getFullYear()
 
 	return MM + separator + DD + separator + YYYY;
 }
 
-ToDo.zeroPad = function(number, width) {
+window[todoComponentName].zeroPad = function(number, width) {
 	if(width === undefined)
 		width = 1;
 
@@ -111,7 +121,7 @@ ToDo.zeroPad = function(number, width) {
 // END of validators and helpers
 
 // Router and Routes
-ToDo.Router.map(function() {
+window[todoComponentName].Router.map(function() {
 	this.route("index", {path: "/"});
 	this.route("about", {path: "/about"});
 	this.resource("tasks", {path: "/tasks"}, function() {
@@ -119,20 +129,20 @@ ToDo.Router.map(function() {
 	});
 });
 
-ToDo.AboutRoute = Ember.Route.extend({ });
+window[todoComponentName].AboutRoute = Ember.Route.extend({ });
 
-ToDo.IndexRoute = Ember.Route.extend({
+window[todoComponentName].IndexRoute = Ember.Route.extend({
 	redirect: function() {
 		this.transitionTo('tasks');
 	}
 });
 
-ToDo.TasksRoute = Ember.Route.extend({
+window[todoComponentName].TasksRoute = Ember.Route.extend({
 	model: function() {
-		ToDo.taskStatusCodes = Ember.ArrayController.create();
-		this.store.find('status_code').then(
+		window[todoComponentName].taskStatusCodes = Ember.ArrayController.create();
+		this.store.find('status-code').then(
 				function(result) {
-					ToDo.taskStatusCodes = result;
+					window[todoComponentName].taskStatusCodes = result;
 				},
 				function(error) {
 					console.log("No Error Codes");
@@ -144,14 +154,14 @@ ToDo.TasksRoute = Ember.Route.extend({
 // END of Router and Routes
 
 // MODELS
-ToDo.StatusCode = DS.Model.extend({
+window[todoComponentName].StatusCode = DS.Model.extend({
 	code: DS.attr('string'),
 	decode: DS.attr('string')
 });
 
 // Fixtures for the app.
 // TODO: Replace fixtures with call to AHR
-ToDo.StatusCode.FIXTURES = [
+window[todoComponentName].StatusCode.FIXTURES = [
 		{ "id": "A", "decode": "Active"},
 		{ "id": "I", "decode": "Inactive"},
 		{ "id": "O", "decode": "On Hold"},
@@ -159,40 +169,40 @@ ToDo.StatusCode.FIXTURES = [
 ];
 // END of Status Code Model
 
-ToDo.Task = DS.Model.extend({
+window[todoComponentName].Task = DS.Model.extend({
 	taskName: DS.attr('string'),
 	targetCompletionDate: DS.attr('date'),
 	actualCompletionDate: DS.attr('date'),
 	taskStatusCode: DS.attr('string'),
 
 	taskStatus: function () {
-		for(var ii=0;ii<ToDo.taskStatusCodes.toArray().length;ii++) 
-			if (this.get('taskStatusCode') == ToDo.taskStatusCodes.toArray()[ii].get('id'))
-				return ToDo.taskStatusCodes.toArray()[ii].get('decode');
+		for(var ii=0;ii<window[todoComponentName].taskStatusCodes.toArray().length;ii++) 
+			if (this.get('taskStatusCode') == window[todoComponentName].taskStatusCodes.toArray()[ii].get('id'))
+				return window[todoComponentName].taskStatusCodes.toArray()[ii].get('decode');
 
-		return ToDo.taskStatusCodes.toArray().length;
+		return window[todoComponentName].taskStatusCodes.toArray().length;
 	}.property('taskStatusCode'),
 
 	formattedTargetCompletionDate: function(key, value) {
 		if(value)
 			return value;
 		else 
-			return ToDo.getFormattedDateOrEmptyString(this.get('targetCompletionDate'));
+			return window[todoComponentName].getFormattedDateOrEmptyString(this.get('targetCompletionDate'));
 	}.property('targetCompletionDate'),
 	
 	formattedActualCompletionDate: function(key, value) {
 		if(value)
 			return value;
 		else 
-			return ToDo.getFormattedDateOrEmptyString(this.get('actualCompletionDate'));
+			return window[todoComponentName].getFormattedDateOrEmptyString(this.get('actualCompletionDate'));
 	}.property('actualCompletionDate'),
 
 	sortedTargetCompletionDate: function() {
-		return ToDo.getFormattedDateOrEmptyString(this.get('targetCompletionDate'), "YYYYMMDD", "");
+		return window[todoComponentName].getFormattedDateOrEmptyString(this.get('targetCompletionDate'), "YYYYMMDD", "");
 	}.property('targetCompletionDate'),
 	
 	sortedActualCompletionDate: function() {
-		return ToDo.getFormattedDateOrEmptyString(this.get('actualCompletionDate'), "YYYYMMDD", "");
+		return window[todoComponentName].getFormattedDateOrEmptyString(this.get('actualCompletionDate'), "YYYYMMDD", "");
 	}.property('actualCompletionDate'),
 		
 	isLate:  function () {
@@ -211,15 +221,15 @@ ToDo.Task = DS.Model.extend({
 	isValidRecord: function() {
 		var isValid = true;
 
-		if (!ToDo.validateTaskName(this.get('taskName'))) 
+		if (!window[todoComponentName].validateTaskName(this.get('taskName'))) 
 			isValid = false;
-		else if (!ToDo.validateStatus(this.get('taskStatusCode'))) 
+		else if (!window[todoComponentName].validateStatus(this.get('taskStatusCode'))) 
 			isValid = false;
-		else if (!ToDo.validateDate(this.get('formattedTargetCompletionDate'))) 
+		else if (!window[todoComponentName].validateDate(this.get('formattedTargetCompletionDate'))) 
 			isValid = false;
-		else if (this.get('taskStatusCode') == "C" && !ToDo.validateDate(this.get('formattedActualCompletionDate')))
+		else if (this.get('taskStatusCode') == "C" && !window[todoComponentName].validateDate(this.get('formattedActualCompletionDate')))
 			isValid = false;
-		else if (this.get('formattedActualCompletionDate').trim().length > 0 && !ToDo.validateDate(this.get('formattedActualCompletionDate'))) 
+		else if (this.get('formattedActualCompletionDate').trim().length > 0 && !window[todoComponentName].validateDate(this.get('formattedActualCompletionDate'))) 
 			isValid = false;
 
 		return isValid;
@@ -245,7 +255,7 @@ ToDo.Task = DS.Model.extend({
 
 // This is static fixture data
 // TODO: Replace fixture data with dynamic AHR data
-ToDo.Task.FIXTURES = [
+window[todoComponentName].Task.FIXTURES = [
 	{ "id": 21, "taskName": "Task 31", "taskStatusCode": "A", "targetCompletionDate": new Date("09/03/2013"), "actualCompletionDate": null},
 	{ "id": 22, "taskName": "Task 32", "taskStatusCode": "I", "targetCompletionDate": new Date("10/08/2013"), "actualCompletionDate": null},
 	{ "id": 23, "taskName": "Task 33", "taskStatusCode": "C", "targetCompletionDate": new Date("10/01/2013"), "actualCompletionDate": new Date("09/30/2013")},
@@ -254,17 +264,17 @@ ToDo.Task.FIXTURES = [
 // END MODELS
 
 // Views
-ToDo.EditTaskView = Ember.TextField.extend({
+window[todoComponentName].EditTaskView = Ember.TextField.extend({
 	didInsertElement: function () {
 		this.$().focus();
 	}
 });
 
-Ember.Handlebars.helper('edit-task', ToDo.EditTaskView);
+Ember.Handlebars.helper('edit-task', window[todoComponentName].EditTaskView);
 // END Views
 
 // Controllers
-ToDo.TasksController = Ember.ArrayController.extend({
+window[todoComponentName].TasksController = Ember.ArrayController.extend({
 	sortProperties: ['sortedTargetCompletionDate'],
 	sortAscending: true,
 	newTaskName: "",
@@ -302,11 +312,11 @@ ToDo.TasksController = Ember.ArrayController.extend({
 	isValidRecord: function() {
 		var isValid = true;
 
-		if (!ToDo.validateTaskName(this.get('newTaskName'))) 
+		if (!window[todoComponentName].validateTaskName(this.get('newTaskName'))) 
 			isValid = false;
-		else if (!ToDo.validateStatus(this.get('newStatus')))
+		else if (!window[todoComponentName].validateStatus(this.get('newStatus')))
 			isValid = false;
-		else if (!ToDo.validateDate(this.get('newTargetCompletionDate')))
+		else if (!window[todoComponentName].validateDate(this.get('newTargetCompletionDate')))
 			isValid = false;
 
 		return isValid;
@@ -393,7 +403,7 @@ ToDo.TasksController = Ember.ArrayController.extend({
 	}
 });
 
-ToDo.TaskController = Ember.ObjectController.extend({
+window[todoComponentName].TaskController = Ember.ObjectController.extend({
 	isEditing: false,
 	userConfirmed: false,
 
@@ -440,4 +450,5 @@ ToDo.TaskController = Ember.ObjectController.extend({
 	}
 });
 // END Controllers
+});
 
