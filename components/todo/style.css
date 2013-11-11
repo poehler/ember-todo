@@ -49,7 +49,7 @@
 	}
 
 	
-#about-container {
+.about-container {
 	color: #fff;
 	border-radius: 6px;
 	background: #00264a;
@@ -61,7 +61,7 @@
 	background: linear-gradient(to bottom,#00264a 0,#001e42 51%,#001638 100%,#00133c 100%);
 	-pie-background: linear-gradient(top,#00264a 0,#001e42 51%,#001638 100%,#00133c 100%);
 	}
-#todo-container {
+.todo-container {
 	color: #fff;
 	border-radius: 6px;
 	background: #00264a;
@@ -73,15 +73,15 @@
 	background: linear-gradient(to bottom,#00264a 0,#001e42 51%,#001638 100%,#00133c 100%);
 	-pie-background: linear-gradient(top,#00264a 0,#001e42 51%,#001638 100%,#00133c 100%);
 	}
-#todo-list {
+.todo-list {
 	list-style-type:none;
 	min-width:650px;
 	}
-#todo-list li {
+.todo-list li {
 	clear:both;
 	width:100%;	
 	}
-#todo-list li div {
+.todo-list li div {
 	float:left;
 	background-color:white;   
 	padding-top:10px;
@@ -89,17 +89,17 @@
 	border-bottom:1px solid #c0c0c0;
 	}
 
-#todo-list li.headerRow div{
+.todo-list li.headerRow div{
 	font-weight:bold;
 	background-color:#c0c0c0;
 	color:#00264a;
 	}
-#todo-list li.updateRow div{
+.todo-list li.updateRow div{
 	background-color:#f3f3f3;
 	height: 3em;
 	padding-top:10px;
 	}
-#todo-list li.newRow div{
+.todo-list li.newRow div{
 	background-color:#f3f3f3;
 	height: 2em;
 	padding-top:15px;

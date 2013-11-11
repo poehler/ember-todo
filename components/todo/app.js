@@ -1,8 +1,15 @@
 // Create the application
 "use strict";
+var componentIndex = 0;
+var globalTaskStatusCodes = [
+	{ "id": "A", "decode": "Active"},
+	{ "id": "I", "decode": "Inactive"},
+	{ "id": "O", "decode": "On Hold"},
+	{ "id": "C", "decode": "Completed"}
+];
 $('[class*="todo-component"]').each(function(i, element) {
-    var todoDiv = "#" + this.id;
-    var todoComponentName = this.getAttribute("data-component-name");
+    var todoDiv = this;
+    var todoComponentName = "ToDo" + componentIndex++;
     
 window[todoComponentName] = Ember.Application.create(
 		{	rootElement: todoDiv,
@@ -139,36 +146,12 @@ window[todoComponentName].IndexRoute = Ember.Route.extend({
 
 window[todoComponentName].TasksRoute = Ember.Route.extend({
 	model: function() {
-		window[todoComponentName].taskStatusCodes = Ember.ArrayController.create();
-		this.store.find('status-code').then(
-				function(result) {
-					window[todoComponentName].taskStatusCodes = result;
-				},
-				function(error) {
-					console.log("No Error Codes");
-				}
-		);
 		return this.store.find('task');
 	}
 });
 // END of Router and Routes
 
 // MODELS
-window[todoComponentName].StatusCode = DS.Model.extend({
-	code: DS.attr('string'),
-	decode: DS.attr('string')
-});
-
-// Fixtures for the app.
-// TODO: Replace fixtures with call to AHR
-window[todoComponentName].StatusCode.FIXTURES = [
-		{ "id": "A", "decode": "Active"},
-		{ "id": "I", "decode": "Inactive"},
-		{ "id": "O", "decode": "On Hold"},
-		{ "id": "C", "decode": "Completed"}
-];
-// END of Status Code Model
-
 window[todoComponentName].Task = DS.Model.extend({
 	taskName: DS.attr('string'),
 	targetCompletionDate: DS.attr('date'),
@@ -176,11 +159,11 @@ window[todoComponentName].Task = DS.Model.extend({
 	taskStatusCode: DS.attr('string'),
 
 	taskStatus: function () {
-		for(var ii=0;ii<window[todoComponentName].taskStatusCodes.toArray().length;ii++) 
-			if (this.get('taskStatusCode') == window[todoComponentName].taskStatusCodes.toArray()[ii].get('id'))
-				return window[todoComponentName].taskStatusCodes.toArray()[ii].get('decode');
+		for(var ii=0;ii<globalTaskStatusCodes.length;ii++) 
+			if (this.get('taskStatusCode') == globalTaskStatusCodes[ii].id)
+				return globalTaskStatusCodes[ii].decode;
 
-		return window[todoComponentName].taskStatusCodes.toArray().length;
+		return this.get('taskStatusCode');
 	}.property('taskStatusCode'),
 
 	formattedTargetCompletionDate: function(key, value) {
@@ -280,6 +263,7 @@ window[todoComponentName].TasksController = Ember.ArrayController.extend({
 	newTaskName: "",
 	newStatus: "A",
 	newTargetCompletionDate: "",
+	taskStatusCodes: globalTaskStatusCodes,
 
 	isSortedByTaskName: function() {
 		if (this.sortProperties[0] == 'taskName')
@@ -406,6 +390,7 @@ window[todoComponentName].TasksController = Ember.ArrayController.extend({
 window[todoComponentName].TaskController = Ember.ObjectController.extend({
 	isEditing: false,
 	userConfirmed: false,
+	taskStatusCodes: globalTaskStatusCodes,
 
 	actions: {
 

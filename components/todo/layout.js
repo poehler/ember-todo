@@ -1,31 +1,26 @@
 (function() {
 	"use strict";
+    function loadTemplate(template, componentName) {
+        var templateName = template.split('/todo/').reverse()[0].replace('.hbs', '');
+        var processedHandlebarTemplate = "";
+    	$.get(template, function(contents) {
+            processedHandlebarTemplate= contents.replace(/#todoComponentName#/g, componentName);
+            Ember.TEMPLATES[componentName + "/" + templateName ] = Ember.Handlebars.template(Ember.Handlebars.precompile(processedHandlebarTemplate));
+    	});
+    }
+    var componentIndex = 0;
 	$('[class*="todo-component"]').each(function(i, element) {
-        var todoDiv = '#' + this.id;
-        var todoComponentName = this.getAttribute("data-component-name");
-        var todoTemplate = this.getAttribute("data-template-name");
-        function compile(template) {
-            var templateName = template.split('/todo/').reverse()[0].replace('.handlebars', '');
-            $.ajax({
-                url: template,
-                cache: false,
-                async: false,
-                success: function (source) {
-                    var processedHandlebarTemplate= source.toString().replace(/#todoComponentName#/g, todoComponentName);
-                    var input = Ember.Handlebars.precompile(processedHandlebarTemplate);
-                    Ember.TEMPLATES[todoComponentName + "/" + templateName] = Ember.Handlebars.template(input);
-                }
-            });
-    	}
-    	compile('http://localhost:8082/components/todo/application.handlebars');
-    	compile('http://localhost:8082/components/todo/tasks.handlebars');
-    	compile('http://localhost:8082/components/todo/about.handlebars');
+        var todoDiv = this;
+        var todoComponentName = "ToDo" + componentIndex++;
 
+    	loadTemplate("/components/todo/application.hbs", todoComponentName);
+    	loadTemplate("/components/todo/about.hbs", todoComponentName);
+    	loadTemplate("/components/todo/tasks.hbs", todoComponentName);
+        
     	var emberLoadPollingDelay = 100;
     	var timer = window.setInterval(function() {
     		if (typeof window[todoComponentName] === "object") {
-    			$(todoDiv + " + .loading").addClass("done");
-    			$(todoDiv + " + .loading").remove();
+//    			$(todoDiv).addClass("done");
     			window.clearInterval(timer);
     		}
     	}, emberLoadPollingDelay);

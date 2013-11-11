@@ -2,8 +2,8 @@
 	background-image: url('http://localhost:8082/images/loader.gif');
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
-    height: 50px;
-    width:50px;
+    min-height: 50px;
+    min-width:50px;
 	}
 .done {
 	background-image: url('');
