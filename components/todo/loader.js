@@ -9,7 +9,7 @@ Modernizr.load([
 	{
 		test : typeof Ember == 'undefined',
         yep: ['/js/libs/ember-1.0.0.js', '/js/libs/ember-data.js'],
-	    both: [ '/components/todo/layout.js', '/components/todo/app.js', '/components/todo/style.css']
+	    both: ['/js/libs/iam-globals.js', '/components/todo/layout.js', '/components/todo/app.js', '/components/todo/style.css']
 	}
 	
 ]);

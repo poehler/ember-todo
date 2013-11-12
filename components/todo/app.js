@@ -53,78 +53,11 @@ window[todoComponentName].validateDate = function (checkThisDate) {
 		isValid = false;
 	else if (!checkThisDate.match(dateRegularExpression))
 		isValid = false;
-	else if (!window[todoComponentName].isValidDate(checkThisDate))
+	else if (!iam.isValidDate(checkThisDate))
 		isValid = false;
 
 	return isValid;
 };
-
-window[todoComponentName].isValidDate = function(date) {
-	var isValid = true;
-
-	if (window[todoComponentName].isBlank(date))
-		isValid = false;
-	else if (isNaN((new Date(date)).getYear()))
-		isValid = false;
-
-	return isValid;
-}
-
-window[todoComponentName].isBlank = function(x) {
-	return (x === undefined) || (x === "") || (x === null);
-}
-
-window[todoComponentName].getFormattedDateOrEmptyString = function(date, format, separator) {
-	if(format === undefined)
-		format = 'MMDDYYYY';
-
-	if(separator === undefined)
-		separator = '/';
-
-	if (!window[todoComponentName].isValidDate(date))
-		return "";
-	else if (format == "YYYYMMDD") 
-		return window[todoComponentName].formatDateYYYYMMDD(new Date(date), separator);
-	else if (format == "MMDDYYYY") 
-		return window[todoComponentName].formatDateMMDDYYYY(new Date(date), separator);
-
-
-	return YYYY + separator + MM + separator + DD;
-}
-
-window[todoComponentName].formatDateYYYYMMDD = function(date, separator) {
-	if(separator === undefined)
-		separator = '/';
-
-	var MM = window[todoComponentName].zeroPad(date.getMonth() + 1, 2);
-	var DD = window[todoComponentName].zeroPad(date.getDate(), 2);
-	var YYYY = date.getFullYear()
-
-	return YYYY + separator + MM + separator + DD;
-}
-
-window[todoComponentName].formatDateMMDDYYYY = function(date, separator) {
-	if(separator === undefined)
-		separator = '/';
-
-	var MM = window[todoComponentName].zeroPad(date.getMonth() + 1, 2);
-	var DD = window[todoComponentName].zeroPad(date.getDate(), 2);
-	var YYYY = date.getFullYear()
-
-	return MM + separator + DD + separator + YYYY;
-}
-
-window[todoComponentName].zeroPad = function(number, width) {
-	if(width === undefined)
-		width = 1;
-
-	var paddedResult = "" + number;
-
-	while (width > paddedResult.length)
-		paddedResult = "0" + paddedResult;
-
-	return paddedResult;
-}
 // END of validators and helpers
 
 // Router and Routes
@@ -170,22 +103,22 @@ window[todoComponentName].Task = DS.Model.extend({
 		if(value)
 			return value;
 		else 
-			return window[todoComponentName].getFormattedDateOrEmptyString(this.get('targetCompletionDate'));
+			return iam.getFormattedDateOrEmptyString(this.get('targetCompletionDate'));
 	}.property('targetCompletionDate'),
 	
 	formattedActualCompletionDate: function(key, value) {
 		if(value)
 			return value;
 		else 
-			return window[todoComponentName].getFormattedDateOrEmptyString(this.get('actualCompletionDate'));
+			return iam.getFormattedDateOrEmptyString(this.get('actualCompletionDate'));
 	}.property('actualCompletionDate'),
 
 	sortedTargetCompletionDate: function() {
-		return window[todoComponentName].getFormattedDateOrEmptyString(this.get('targetCompletionDate'), "YYYYMMDD", "");
+		return iam.getFormattedDateOrEmptyString(this.get('targetCompletionDate'), "YYYYMMDD", "");
 	}.property('targetCompletionDate'),
 	
 	sortedActualCompletionDate: function() {
-		return window[todoComponentName].getFormattedDateOrEmptyString(this.get('actualCompletionDate'), "YYYYMMDD", "");
+		return iam.getFormattedDateOrEmptyString(this.get('actualCompletionDate'), "YYYYMMDD", "");
 	}.property('actualCompletionDate'),
 		
 	isLate:  function () {
